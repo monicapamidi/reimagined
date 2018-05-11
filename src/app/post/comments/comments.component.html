@@ -1,0 +1,67 @@
+<div class="panel panel-primary">
+
+  <div class="panel-heading">
+    View post Details
+
+  </div>
+
+  <div class="panel-body">
+    <button class="btn btn-success" (click)="gotoPost()">Go To Posts</button>
+
+    <h3> POST</h3>
+    <p>
+      <button class="btn btn-success" style="float:right" (click)="like()">Like</button>
+      <span></span>
+      <b>Title </b>{{post.postTitle}} </p>
+
+    <p>
+      <b>Posted On </b> {{post.postedDate}}</p>
+    <p>
+      <b> Description</b> {{post.description}}</p>
+<!-- 
+    <button class='btn btn-primary' (click)="loadcomments()">Comments</button> -->
+
+    <table class="table table-bordered table-hover">
+      <tbody> 
+        <tr *ngFor ="let  comlist of comments">
+        <td>{{comlist.comment}}</td> 
+        </tr>
+        
+      </tbody>
+    </table>
+
+    <div class="input-group">
+      <input type="text" placeholder="add a comment here" [(ngModel)]="commentDetails.comment" />
+      <br/>
+      <br/>
+      <button class='btn btn-primary' (click)="addComment(post.postTitle)"> Add Comment</button>
+    </div> 
+  </div>
+</div>
+  
+
+
+ 
+
+<!--       
+      <button class="btn btn-success" (click)="toggleComments()">{{showHideCom? 'Hide Comments':'Show Comments'}}</button> 
+       <div class="viewComments" >
+                  <p *ngIf="ShowHideCom"> {{post.comments}} </p>
+            
+            
+                </div>
+       -->
+<!-- <tbody>
+          <tr *ngFor="let p of post">
+            <td>
+                <p *ngIf="ShowHideCom">show comments</p>
+                  </td>
+            </tr>
+      
+      </tbody> -->
+<!-- <li ng-repeat="comments in post">
+              <h4><a href="#" ng-click="showDetails = ! showDetails">view comments</a></h4>
+               <div class="comments-view" ng-show="showDetails">
+                  <p> {{post.description}} </p>
+               </div>
+          </li> -->

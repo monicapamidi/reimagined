@@ -1,0 +1,31 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">{{postName}}</div>
+  <div class="panel-body"></div>
+
+
+
+  <table class="table table-bordered table-hover" *ngIf="post && post.length">
+    <thead>
+      <tr>
+       
+        <th> Title</th>
+        <th> Topic</th>
+        <th>Posted date</th>
+        
+      </tr>
+    </thead>
+  
+  <tbody>
+   <tr *ngFor="let post of post">
+     <td> 
+  <a href="#" [routerLink]="['/comments', post.postTitle]">{{post.postTitle}}
+  </a>
+</td>
+    <td>{{post.postTopic}}</td>
+    <td>{{post.postedDate}}</td>
+  </tr>
+  
+  </tbody>
+  </table>
+  </div>
+  

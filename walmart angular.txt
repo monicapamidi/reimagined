@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular-route.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular-animate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular-touch.min.js"></script>
+<style>
+.glyphicon-trash{
+ color: red;
+}
+</style>
+<body ng-app="myApp" class="container" ng-controller="myCtrl">
+<div class="row">
+ <div ng-view></div>
+</div>
+</body>
+<script type="text/ng-template" id="index.html">
+  <div class="panel panel-primary text-center">
+      <div class="panel-heading">Welcome</div>
+      <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="usr" ng-model="userName" placeholder="Username">
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <input type="password" class="form-control" id="pwd" ng-model="password" ng-change="checkValidations()" placeholder="Password">
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <button type="button" class="btn btn-primary btn-block" ng-disabled="!pwdSuccess" ng-click="login()">Login</button>
+            </div>
+        </div>
+      </div>
+  </div>
+</script>
+<script type="text/ng-template" id="listView.html">
+  <div>
+    <div class="panel panel-primary">
+        <div class="panel-heading text-center"><span ng-click="goBack()" class="glyphicon glyphicon-chevron-left" style="position:absolute;left:5%;top:2%"></span><span class="">List View</span></div>
+        <div class="panel-body" style="padding:0px;">
+          <ul class="list-group" ng-repeat="item in items track by $index" style="margin:0px;">
+             <li class="list-group-item" ng-swipe-left="showDelete($index)">{{item}} <span ng-show="deleteValues[$index] == 1" ng-click="delete($index)" class="glyphicon glyphicon-trash"></span></li>
+           </ul>
+        </div>
+    </div>
+</div>
+</script>
+<script>
+var app = angular.module('myApp', ["ngRoute", "ngAnimate", "ngTouch"]);
+app.config(function($routeProvider) {
+    $routeProvider
+    .when("/", {
+        templateUrl : "index.html",
+        controller  : 'myCtrl'
+    })
+    .when("/listView", {
+        templateUrl : "listView.html",
+        controller  : 'myListCtrl'
+    })
+    .otherwise({
+       templateUrl : "index.html"
+    });
+});
+app.controller('myCtrl', function($scope, $location) {
+ $scope.password = "";
+    $scope.checkValidations = function(){
+     $scope.pwdSuccess = false;
+     $scope.containsSpecial = $scope.password.match(new RegExp(/^\w+$/));
+      $scope.containsUpper = $scope.password.match(new RegExp("[A-Z]"));
+     if($scope.password.length > 8 && $scope.containsUpper && $scope.containsSpecial === null) $scope.pwdSuccess = true;
+    }
+    $scope.login = function(){
+     $location.path("/listView");
+    }
+});
+app.controller('myListCtrl', function($scope, $location) {
+ $scope.items = ["Example 1", "Example 2", "Example 3", "Example 4"];
+    $scope.deleteValues = [];
+    $scope.refreshSelectedElement = function(){
+     angular.forEach($scope.items, function(value, key) {
+         $scope.deleteValues[key] = '0';
+       });
+    }
+    $scope.goBack = function(){
+     $location.path("/");
+    }
+    $scope.showDelete = function(index){
+     $scope.refreshSelectedElement();
+     $scope.deleteValues[index] = "1";
+    }
+    $scope.delete = function(index){
+     $scope.items.splice(index, 1);
+        $scope.refreshSelectedElement();
+    }
+});
+</script>
+</html>
